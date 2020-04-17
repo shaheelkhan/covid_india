@@ -62,6 +62,14 @@ def new_data(data):
 
         filename = today.strftime("%m-%d-%Y")+'.csv'
         filelocation = "C:\\Users\\Shaheel\\Desktop\\Covid19_India_Data\\covid_india\\"
+        
+        os.chdir("C:\\Users\\Shaheel\\Desktop\\Covid19_India_Data\\covid_india\\")
+        
+        extension = 'csv'
+        all_filenames = [file for file in glob.glob('*.{}'.format(extension))]
+        
+        if filename in all_filenames:
+                os.remove(filelocation+filename)
                
         return data.to_csv(filelocation + filename,index=False)
 
@@ -70,7 +78,14 @@ new_data(statedata)
 #Function to combine each days data into a single csv file
 def combined_data(path):
         
+        os.chdir(path)
+        
         extension = 'csv'
+        
+        all_filenames = [file for file in glob.glob('*.{}'.format(extension))]
+        
+        if 'combined.csv' in all_filenames:
+                os.remove(path+'combined.csv')
         
         all_filenames = [file for file in glob.glob('*.{}'.format(extension))]
         
