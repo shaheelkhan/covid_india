@@ -8,7 +8,7 @@ Number of  Confirmed cases of Covid19 for each State/UT
 Number of  Death cases of Covid19 for each State/UT
 Number of  Recovered cases of Covid19 for each State/UT
 
-##Data
+## Data
 
 Data for this project is sourced from Ministry of Health and Family welfare website
 Link:- https://www.mohfw.gov.in/
