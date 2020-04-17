@@ -14,7 +14,7 @@ Data for this project is sourced from Ministry of Health and Family Welfare webs
 Link:- https://www.mohfw.gov.in/  
 
 Table given in the website updates regularly however there is no date/time series column.  
-I've added a Date column that returns today's date and save each days data as "mm-dd-yyyy.csv" format(eg:- 04-17-2020.csv"  
+I've added a Date column that returns today's date and save each days data as "mm-dd-yyyy.csv" format(eg:- 04-17-2020.csv")    
 
 Then I combine each days data into a single csv.  
 
