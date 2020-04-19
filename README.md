@@ -16,7 +16,8 @@ Link:- https://www.mohfw.gov.in/
 Table given in the website updates regularly however there is no date/time series column.  
 I've added a Date column that returns today's date and save each days data as "mm-dd-yyyy.csv" format(eg:- 04-17-2020.csv")    
 
-Then I combine each days data into a single csv. 
+Then I combine each days data into a single csv.   
+
 I've also added a PowerBI dashboard of covid19 in India
 
 This data will be updated every day.  
