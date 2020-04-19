@@ -61,9 +61,10 @@ def new_data(data):
         today = pd.to_datetime('today').date()
 
         filename = today.strftime("%m-%d-%Y")+'.csv'
-        filelocation = "C:\\Users\\Shaheel\\Desktop\\Covid19_India_Data\\covid_india\\"
+        filelocation = os.getcwd()
+        filelocation = filelocation + '\\'
         
-        os.chdir("C:\\Users\\Shaheel\\Desktop\\Covid19_India_Data\\covid_india\\")
+        os.chdir(filelocation)
         
         extension = 'csv'
         all_filenames = [file for file in glob.glob('*.{}'.format(extension))]
@@ -93,5 +94,8 @@ def combined_data(path):
         
         return combined.to_csv('combined.csv',index=False,encoding='utf-8-sig')        
         
-combined_data("C:\\Users\\Shaheel\\Desktop\\Covid19_India_Data\\covid_india\\")  
+location = os.getcwd()
+location = location + '\\'        
+
+combined_data(location)   
 
