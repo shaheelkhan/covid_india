@@ -44,6 +44,8 @@ statedata.drop("Sl.No",axis=1,inplace=True)
 statedata = statedata[:-3][1:]
 
 statedata['State/UT'] = statedata['State/UT'].replace("Nagaland#","Nagaland")
+statedata['State/UT'] = statedata['State/UT'].replace("Jharkhand#","Jharkhand")
+
 
 #Function to return a csv file for daily updated data
 def new_data(data):
