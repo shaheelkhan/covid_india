@@ -41,7 +41,7 @@ statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Confirmed","Recovered",
 
 #Remove unwanted columns and rows
 statedata.drop("Sl.No",axis=1,inplace=True)
-statedata = statedata[:-3][1:]
+statedata = statedata[:-4][1:]
 
 statedata['State/UT'] = statedata['State/UT'].replace("Nagaland#","Nagaland")
 statedata['State/UT'] = statedata['State/UT'].replace("Jharkhand#","Jharkhand")
