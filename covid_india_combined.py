@@ -41,10 +41,10 @@ statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Confirmed","Recovered",
 
 #Remove unwanted columns and rows
 statedata.drop("Sl.No",axis=1,inplace=True)
-statedata = statedata[:-4][1:]
+statedata = statedata[:-5][1:]
 
-statedata['State/UT'] = statedata['State/UT'].replace("Nagaland#","Nagaland")
-statedata['State/UT'] = statedata['State/UT'].replace("Jharkhand#","Jharkhand")
+for col in statedata.columns:
+        statedata[col] = statedata[col].str.replace("#","")
 
 
 #Function to return a csv file for daily updated data
