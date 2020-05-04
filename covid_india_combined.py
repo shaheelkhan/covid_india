@@ -41,7 +41,7 @@ statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Confirmed","Recovered",
 
 #Remove unwanted columns and rows
 statedata.drop("Sl.No",axis=1,inplace=True)
-statedata = statedata[:-5][1:]
+statedata = statedata[:-3][1:]
 
 for col in statedata.columns:
         statedata[col] = statedata[col].str.replace("#","")
