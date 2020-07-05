@@ -33,7 +33,7 @@ for tr in soup.findAll('tr'):
         data.append(row)
 
 #Create a Datafrae from the scrapped data
-statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Confirmed","Recovered","Death"])
+statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Active","Recovered","Death","Confirmed"])
 
 ###########################
 #####  Data Cleaning  #####
@@ -41,7 +41,8 @@ statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Confirmed","Recovered",
 
 #Remove unwanted columns and rows
 statedata.drop("Sl.No",axis=1,inplace=True)
-statedata = statedata[:-3][1:]
+statedata = statedata[1:36]
+
 
 for col in statedata.columns:
         statedata[col] = statedata[col].str.replace("#","")
