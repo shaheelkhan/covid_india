@@ -7,45 +7,73 @@ Created on Fri Apr 17 20:12:44 2020
 
 
 #Libraries
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from bs4 import BeautifulSoup
 import os
 import glob
 import urllib
-from bs4 import BeautifulSoup
 import pandas as pd
 import datetime
 from datetime import datetime
 
+#Page to scrap
+url = "https://www.mohfw.gov.in/"
+
+#Create a new Chrome session
+chromedriver = "C:\\webdrivers\\chromedriver.exe"
+driver = webdriver.Chrome(chromedriver)
+driver.implicitly_wait(30)
+driver.get(url)
+
+python_button = driver.find_element_by_id('state-data')
+python_button.click()
+
+
 ###########################
+
 #####  Web Scrapping  #####
+
 ###########################
 
-def souper(base_url):
-        url_page = urllib.request.urlopen(base_url)
-        bsoup = BeautifulSoup(url_page,'html.parser')
-        return bsoup
-
-soup = souper("https://www.mohfw.gov.in/")
+html = driver.page_source
+soup = BeautifulSoup(html,'html.parser')
 
 data=[]
 for tr in soup.findAll('tr'):
         td = tr.findAll('td')
         row = [tr.text for tr in td]
         data.append(row)
+        
 
 #Create a Datafrae from the scrapped data
-statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Active","Recovered","Death","Confirmed"])
+statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Active","Active_Change","Recovered","Recovered_Change","Death","Death_Change"])
 
-###########################
-#####  Data Cleaning  #####
-###########################
 
-#Remove unwanted columns and rows
+#Data Cleaning
+
 statedata.drop("Sl.No",axis=1,inplace=True)
-statedata = statedata[1:36]
-
+statedata = statedata[3:38]
 
 for col in statedata.columns:
+        statedata[col] = statedata[col].replace("\xa0 ",0)
+        
+for col in statedata.columns:
         statedata[col] = statedata[col].str.replace("#","")
+
+#Check for missing data
+statedata.isnull().sum()
+
+#Replace NaN with 0
+statedata = statedata.fillna(0)
+
+for col in statedata.columns:
+        if col != 'State/UT':
+                statedata[col] =  statedata[col].astype(int)
+
+
+#Add a new column for Total confirmed cases
+statedata['Confirmed'] = statedata['Active'] + statedata['Recovered'] + statedata['Death']
 
 
 #Function to return a csv file for daily updated data
@@ -53,12 +81,6 @@ def new_data(data):
         
         #Add a new date column that return today's date
         data['Date'] = pd.to_datetime('today')
-        
-        cols = ['Confirmed','Recovered','Death']
-       
-        #Change the datatype of numerical columns
-        for col in cols:
-                data[col] = data[col].astype(int)
         
         #Export today's data as a csv file
         today = pd.to_datetime('today').date()
@@ -101,4 +123,3 @@ location = os.getcwd()
 location = location + '\\'        
 
 combined_data(location)   
-
