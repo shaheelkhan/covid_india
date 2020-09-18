@@ -7,73 +7,36 @@ Created on Fri Apr 17 20:12:44 2020
 
 
 #Libraries
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from bs4 import BeautifulSoup
+
 import os
 import glob
-import urllib
 import pandas as pd
 import datetime
-from datetime import datetime
-
-#Page to scrap
-url = "https://www.mohfw.gov.in/"
-
-#Create a new Chrome session
-chromedriver = "C:\\webdrivers\\chromedriver.exe"
-driver = webdriver.Chrome(chromedriver)
-driver.implicitly_wait(30)
-driver.get(url)
-
-python_button = driver.find_element_by_id('state-data')
-python_button.click()
 
 
-###########################
 
-#####  Web Scrapping  #####
 
-###########################
-
-html = driver.page_source
-soup = BeautifulSoup(html,'html.parser')
-
-data=[]
-for tr in soup.findAll('tr'):
-        td = tr.findAll('td')
-        row = [tr.text for tr in td]
-        data.append(row)
-        
-
-#Create a Datafrae from the scrapped data
-statedata=pd.DataFrame(data,columns=["Sl.No","State/UT","Active","Active_Change","Recovered","Recovered_Change","Death","Death_Change"])
-
+#Create a Dataframe
+statedata=pd.read_json('https://www.mohfw.gov.in/data/datanew.json')
 
 #Data Cleaning
 
-statedata.drop("Sl.No",axis=1,inplace=True)
-statedata = statedata[3:38]
+key = lambda x: x != 'state_name'
+statedata = statedata[sorted(statedata, key = key)]
 
-for col in statedata.columns:
-        statedata[col] = statedata[col].replace("\xa0 ",0)
-        
-for col in statedata.columns:
-        statedata[col] = statedata[col].str.replace("#","")
+#Rename some columns
+statedata = statedata.rename(columns= {'positive':'confirmed','cured':'recovered'})
+
+#Remove last two columns
+statedata = statedata.drop(['sno','state_code'],axis=1)
+
+#Remove last row
+statedata = statedata[0:36]
+
+
 
 #Check for missing data
 statedata.isnull().sum()
-
-#Replace NaN with 0
-statedata = statedata.fillna(0)
-
-for col in statedata.columns:
-        if col != 'State/UT':
-                statedata[col] =  statedata[col].astype(int)
-
-
-#Add a new column for Total confirmed cases
-statedata['Confirmed'] = statedata['Active'] + statedata['Recovered'] + statedata['Death']
 
 
 #Function to return a csv file for daily updated data
@@ -123,3 +86,5 @@ location = os.getcwd()
 location = location + '\\'        
 
 combined_data(location)   
+
+combined.describe()
