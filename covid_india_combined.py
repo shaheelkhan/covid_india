@@ -87,4 +87,4 @@ location = location + '\\'
 
 combined_data(location)   
 
-combined.describe()
+
